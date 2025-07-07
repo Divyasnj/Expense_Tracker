@@ -18,15 +18,14 @@ export default function Login() {
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
 
-  // ✅ Redirect to dashboard if already logged in
   if (user) return <Navigate to="/dashboard" />;
 
   const onSubmit = async (data: LoginForm) => {
     try {
       const res = await api.post('/users/login', data);
-      setUser(res.data.user); // store user in context
-      localStorage.setItem('user', JSON.stringify(res.data.user)); // persist user
-      localStorage.setItem('token', res.data.token); // persist token
+      setUser(res.data.user);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
+      localStorage.setItem('token', res.data.token);
       navigate('/dashboard');
     } catch (err: any) {
       alert(err.response?.data?.message || 'Login failed');
@@ -34,14 +33,17 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded shadow-md w-80 space-y-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-black">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="bg-white dark:bg-gray-900 text-black dark:text-white p-6 rounded shadow-md w-80 space-y-4"
+      >
         <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
 
         <input
           {...register('email', { required: true })}
           placeholder="Email"
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
         {errors.email && <p className="text-red-500 text-sm">Email is required</p>}
 
@@ -49,7 +51,7 @@ export default function Login() {
           {...register('password', { required: true })}
           type="password"
           placeholder="Password"
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
         {errors.password && <p className="text-red-500 text-sm">Password is required</p>}
 

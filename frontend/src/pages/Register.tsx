@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import api from '../api/axios';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // ✅ Add this
+import { useAuth } from '../context/AuthContext';
 
 type FormData = {
   name: string;
@@ -18,9 +18,8 @@ export default function Register() {
   } = useForm<FormData>();
 
   const [serverError, setServerError] = useState('');
-  const { user } = useAuth(); // ✅ Check if already logged in
+  const { user } = useAuth();
 
-  // ✅ Redirect if user is already logged in
   if (user) return <Navigate to="/dashboard" />;
 
   const onSubmit = async (data: FormData) => {
@@ -35,17 +34,17 @@ export default function Register() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-black">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded shadow-md w-full max-w-md space-y-4"
+        className="bg-white dark:bg-gray-900 dark:text-white p-8 rounded shadow-md w-full max-w-md space-y-4"
       >
-        <h2 className="text-2xl font-semibold text-center text-gray-800">Register</h2>
+        <h2 className="text-2xl font-semibold text-center">Register</h2>
 
         <input
           {...register('name', { required: 'Name is required' })}
           placeholder="Name"
-          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
         {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
 
@@ -58,7 +57,7 @@ export default function Register() {
             },
           })}
           placeholder="Email"
-          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
 
@@ -72,7 +71,7 @@ export default function Register() {
           })}
           type="password"
           placeholder="Password"
-          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
         />
         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 
@@ -82,7 +81,7 @@ export default function Register() {
             {serverError.toLowerCase().includes('exist') && (
               <p>
                 Already registered?{' '}
-                <Link to="/login" className="text-blue-600 underline">
+                <Link to="/login" className="text-blue-400 underline">
                   Login here
                 </Link>
               </p>
@@ -97,9 +96,9 @@ export default function Register() {
           Register
         </button>
 
-        <p className="text-sm text-center text-gray-600">
+        <p className="text-sm text-center text-gray-600 dark:text-gray-400">
           Already registered?{' '}
-          <Link to="/login" className="text-blue-600 underline">
+          <Link to="/login" className="text-blue-600 dark:text-blue-400 underline">
             Login here
           </Link>
         </p>
