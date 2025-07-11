@@ -18,7 +18,8 @@ const app = express()
 
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://expense-tracker-chi-ivory-51.vercel.app'
+,
   credentials: true
 }))
 app.use(express.json()) // <-- THIS IS REQUIRED
