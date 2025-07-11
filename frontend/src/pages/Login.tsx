@@ -1,7 +1,11 @@
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
+
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { useState } from 'react';
 
 type LoginForm = {
   email: string;
@@ -17,6 +21,8 @@ export default function Login() {
 
   const navigate = useNavigate();
   const { user, setUser } = useAuth();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   if (user) return <Navigate to="/dashboard" />;
 
@@ -47,13 +53,25 @@ export default function Login() {
         />
         {errors.email && <p className="text-red-500 text-sm">Email is required</p>}
 
-        <input
-          {...register('password', { required: true })}
-          type="password"
-          placeholder="Password"
-          className="w-full border p-2 rounded dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-        />
-        {errors.password && <p className="text-red-500 text-sm">Password is required</p>}
+        {/* Password Field with Eye Toggle */}
+        <div className="relative">
+          <input
+            {...register('password', { required: true })}
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            className="w-full border p-2 pr-10 rounded dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute top-2.5 right-2 text-gray-600 dark:text-gray-300"
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </button>
+        </div>
+        {errors.password && (
+          <p className="text-red-500 text-sm">Password is required</p>
+        )}
 
         <button
           type="submit"
