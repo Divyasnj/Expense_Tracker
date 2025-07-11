@@ -3,6 +3,8 @@ import api from '../api/axios';
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 type FormData = {
   name: string;
@@ -18,6 +20,7 @@ export default function Register() {
   } = useForm<FormData>();
 
   const [serverError, setServerError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // 👈 added
   const { user } = useAuth();
 
   if (user) return <Navigate to="/dashboard" />;
@@ -61,19 +64,31 @@ export default function Register() {
         />
         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
 
-        <input
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Password must be at least 6 characters',
-            },
-          })}
-          type="password"
-          placeholder="Password"
-          className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-        />
-        {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+        {/* Password with eye toggle */}
+        <div className="relative">
+          <input
+            {...register('password', {
+              required: 'Password is required',
+              minLength: {
+                value: 6,
+                message: 'Password must be at least 6 characters',
+              },
+            })}
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            className="w-full px-4 py-2 pr-10 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-3 top-2.5 text-gray-600 dark:text-gray-300"
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </button>
+        </div>
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password.message}</p>
+        )}
 
         {serverError && (
           <div className="text-red-600 text-sm text-center">
